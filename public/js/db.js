@@ -26,54 +26,6 @@ class NotFoundError extends Error {
 }
 
 /**
- * Find
- */
-
-const findByIdLocal = id => {
-  const urlsString = localStorage.getItem('urls');
-  if (!urlsString) return undefined;
-
-  const urls = JSON.parse(urlsString);
-  return urls[id];
-};
-
-const findByIdJsonStore = async id => {
-  if (!navigator.onLine) {
-    throw new HTTPError({ statusText: 'Offline' });
-  }
-
-  const res = await fetch(`${JSON_STORE_ENDPOINT}/${id}`);
-  if (!res.ok) {
-    throw new HTTPError(res);
-  }
-
-  const { result } = await res.json();
-
-  if (result && result.original) {
-    return {
-      id,
-      ...result,
-    };
-  }
-  return undefined;
-};
-
-const findById = async id => {
-  let url;
-  url = findByIdLocal(id);
-
-  if (!url) {
-    url = await findByIdJsonStore(id);
-  }
-
-  if (!url) {
-    throw new NotFoundError(id);
-  }
-
-  return url;
-};
-
-/**
  * Store
  */
 
@@ -112,4 +64,55 @@ const store = async url => {
 
   await storeLocal(url);
   await storeJsonStore(url);
+};
+
+/**
+ * Find
+ */
+
+const findByIdLocal = id => {
+  const urlsString = localStorage.getItem('urls');
+  if (!urlsString) return undefined;
+
+  const urls = JSON.parse(urlsString);
+  return urls[id];
+};
+
+const findByIdJsonStore = async id => {
+  if (!navigator.onLine) {
+    throw new HTTPError({ statusText: 'Offline' });
+  }
+
+  const res = await fetch(`${JSON_STORE_ENDPOINT}/${id}`);
+  if (!res.ok) {
+    throw new HTTPError(res);
+  }
+
+  const { result } = await res.json();
+
+  if (result && result.original) {
+    const url = {
+      id,
+      ...result,
+    };
+    await storeLocal(url);
+
+    return url;
+  }
+  return undefined;
+};
+
+const findById = async id => {
+  let url;
+  url = findByIdLocal(id);
+
+  if (!url) {
+    url = await findByIdJsonStore(id);
+  }
+
+  if (!url) {
+    throw new NotFoundError(id);
+  }
+
+  return url;
 };
