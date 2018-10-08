@@ -19,9 +19,11 @@ class NotFoundError extends Error {
 }
 
 const findByIdLocal = id => {
-  const urls = localStorage.getItem('urls');
-  if (!urls) return undefined;
-  return urls.find(url => url.id === id);
+  const urlsString = localStorage.getItem('urls');
+  if (!urlsString) return undefined;
+
+  const urls = JSON.parse(urlsString);
+  return urls[id];
 };
 
 const findByIdJsonStore = async id => {
