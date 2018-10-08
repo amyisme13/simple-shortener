@@ -6,10 +6,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Simple Shortener</title>
+  <link rel="stylesheet" href="./css/bulma.min.css">
   <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
+  <div id="app">
+    <nav class="navbar is-light">
+      <div class="container">
+        <div class="navbar-brand"><a class="navbar-item">
+            <h1 class="subtitle">Simple Shortener</h1>
+          </a></div>
+        <div class="navbar-menu">
+          <div class="navbar-end"><a class="navbar-item" href="https://github.com/amyisme13/simple-shortener">
+              <h2 class="subtitle">Github</h2>
+            </a></div>
+        </div>
+      </div>
+    </nav>
+    <header>
+      <div class="container">
+        <div class="columns is-centered">
+          <div id="inputView" class="column is-half has-text-centered">
+            <h2 class="title">Paste the URL to be shortened</h2>
+            <div class="field is-grouped">
+              <div class="control is-expanded">
+                <input class="input" type="text" placeholder="https://example.com" />
+              </div>
+              <div class="control"><a class="button is-primary is-loading">Shorten</a></div>
+            </div>
+          </div>
+          <div id="redirectView" class="column is-half has-text-centered is-hidden">
+            <h2 class="title">Redirecting...</h2>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <script src="./js/db.js"></script>
   <script src="./js/index.js"></script>
 </body>
 
