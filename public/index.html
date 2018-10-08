@@ -35,9 +35,11 @@
             <h2 class="title">Paste the URL to be shortened</h2>
             <div class="field is-grouped">
               <div class="control is-expanded">
-                <input class="input" type="text" placeholder="https://example.com" />
+                <input id="shortenInput" class="input" type="text" placeholder="https://example.com" />
               </div>
-              <div class="control"><a class="button is-primary is-loading">Shorten</a></div>
+              <div class="control">
+                <a id="shortenBtn" class="button is-primary">Shorten</a>
+              </div>
             </div>
           </div>
           <div id="redirectView" class="column is-half has-text-centered is-hidden">

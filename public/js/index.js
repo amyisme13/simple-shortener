@@ -1,14 +1,16 @@
 /* global findById, store */
 
-// const randomString = () =>
-//   Math.random()
-//     .toString(36)
-//     .substring(7);
+const randomString = () =>
+  Math.random()
+    .toString(36)
+    .substring(7);
 
-const { hash: hashWithHash } = document.location;
+const { hash: hashWithHash } = window.location;
 const hash = hashWithHash.substring(1);
 const redirectView = document.getElementById('redirectView');
 const inputView = document.getElementById('inputView');
+const shortenBtn = document.getElementById('shortenBtn');
+const shortenInput = document.getElementById('shortenInput');
 
 const displayRedirectView = (show = true) => {
   const rdrClasses = redirectView.className.split(' ');
@@ -39,9 +41,18 @@ if (hash) {
     .then(url => {
       window.location = url.original;
     })
-    .catch(err => {
-      console.log(err);
-      displayRedirectView(false);
-      displayInputView();
-    });
+    .catch(err => console.log(err));
+} else {
+  shortenBtn.addEventListener('click', async () => {
+    if (shortenInput.value) {
+      shortenBtn.className += ' is-loading';
+      const newUrl = {
+        id: randomString(),
+        original: shortenInput.value,
+      };
+      await store(newUrl);
+      shortenInput.value = `${window.location.href}#${newUrl.id}`;
+      shortenBtn.className = shortenBtn.className.replace(' is-loading', '');
+    }
+  });
 }
